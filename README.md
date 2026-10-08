@@ -18,7 +18,19 @@ Before uploading the gateway, copy `ch9/gateway/include/wifi_config.example.h` t
 
 ## Progress
 
-All three programs compiled in the original development folder on October 8, 2026. They have not been uploaded or tested on hardware yet. The gateway build used temporary Wi-Fi values.
+All three programs built successfully from this repository on October 8, 2026 using Espressif 32 7.0.1 and ESP-IDF 6.0.1. They have not been uploaded or tested on hardware yet. The gateway builds with placeholder Wi-Fi values until a local configuration is added.
+
+## Next steps
+
+1. Gather the three ESP32 boards, sensor, relay, LEDs, and wiring supplies.
+2. Add the gateway Wi-Fi details locally.
+3. Upload the matching program to each board.
+4. Wire and power the boards, then configure the nodes with nRF Mesh.
+5. Test web ON/OFF commands and the sensor in light and darkness.
+
+## Group commits
+
+Pull the latest changes before editing. After a completed change, use Source Control in VS Code to review and stage the files, write a short commit message, then push. Each member should use their own GitHub account. Saving a file does not create a commit.
 
 ## Source
 
