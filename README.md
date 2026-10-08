@@ -10,9 +10,15 @@ This lab uses three ESP32 boards connected through BLE mesh. The light sensor re
 
 The shared code is in `ch9/common`. The sensor libraries are in `common/esp-idf-lib/components`. Keep these folders together.
 
+## Build
+
+Install PlatformIO in VS Code. Open one program folder and click Build. No board is needed to compile. The projects use Espressif 32 version 7.0.1 and ESP-IDF.
+
+Before uploading the gateway, copy `ch9/gateway/include/wifi_config.example.h` to `wifi_config.h` in the same folder. Put your Wi-Fi name and password in the copy. Git ignores `wifi_config.h`. If the copy is missing, the gateway still builds with placeholder values but cannot connect to your Wi-Fi.
+
 ## Progress
 
-All three programs compiled on the development Mac on October 8, 2026. They have not been uploaded or tested on hardware yet. The gateway build used temporary Wi-Fi values.
+All three programs compiled in the original development folder on October 8, 2026. They have not been uploaded or tested on hardware yet. The gateway build used temporary Wi-Fi values.
 
 ## Source
 

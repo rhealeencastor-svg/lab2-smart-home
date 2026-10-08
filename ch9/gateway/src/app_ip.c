@@ -1,6 +1,12 @@
 
 #include "app_ip.h"
 
+#if __has_include("wifi_config.h")
+#include "wifi_config.h"
+#else
+#include "wifi_config.example.h"
+#endif
+
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_system.h"
