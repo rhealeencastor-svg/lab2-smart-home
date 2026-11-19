@@ -18,6 +18,7 @@
 #include "lwip/sys.h"
 
 
+#define TAG "app.ip"
 #define MAX_RETRY 10
 static int retry_cnt = 0;
 static connect_wifi_params_t m_params;
@@ -32,6 +33,9 @@ static void handle_wifi_connection(void *arg, esp_event_base_t event_base,
     }
     else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED)
     {
+        const wifi_event_sta_disconnected_t *disconnect = event_data;
+        ESP_LOGW(TAG, "Wi-Fi disconnected (reason=%u)", (unsigned)disconnect->reason);
+
         if (retry_cnt++ < MAX_RETRY)
         {
             esp_wifi_connect();

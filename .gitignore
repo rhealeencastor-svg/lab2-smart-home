@@ -4,5 +4,6 @@
 __pycache__/
 *.pyc
 sdkconfig.az-delivery-devkit-v4
+sdkconfig.esp32-s3-devkitc-1
 sdkconfig.old
-ch9/gateway/include/wifi_config.h
+gateway/include/wifi_config.h

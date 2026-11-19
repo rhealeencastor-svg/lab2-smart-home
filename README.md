@@ -1,39 +1,50 @@
-# Lab 2: Smart Home
+# Lab 2 Smart Home
 
-This lab uses three ESP32 boards connected through BLE mesh. The light sensor reports whether the room is dark. The switch controls a relay. The gateway has a webpage for turning the switch on and off.
+Three ESP32 boards form a BLE Mesh network. The light sensor measures lux, the switch drives a relay, and the Wi-Fi gateway serves an ON/OFF page.
 
-## Programs
+## What you need
 
-- `ch9/light_sensor`: TSL2561 light sensor
-- `ch9/switch`: relay control
-- `ch9/gateway`: Wi-Fi and web control
+- An ESP32-S3 DevKitC-1 for the gateway and two ESP32-WROOM development boards for the sensor and switch
+- A TSL2561 light sensor breakout, a relay module with a 3.3 V-compatible input, breadboards, jumpers, and USB data cables
+- An indicator LED and 220 Ω resistor per board for identification during provisioning
+- VS Code with PlatformIO, a 2.4 GHz Wi-Fi network, and nRF Mesh on a phone
 
-The shared code is in `ch9/common`. The sensor libraries are in `common/esp-idf-lib/components`. Keep these folders together.
+## Open and upload
 
-## Build
+Clone the whole repo. Open the matching folder in VS Code and plug in one board at a time.
 
-Install PlatformIO in VS Code. Open one program folder and click Build. No board is needed to compile. The projects use Espressif 32 version 7.0.1 and ESP-IDF.
+| Folder | PlatformIO environment | Main connections |
+| --- | --- | --- |
+| `gateway/` | `esp32-s3-devkitc-1` | Wi-Fi and the ON/OFF page. Use the S3 COM/UART USB port when using GPIO19 as the indicator. |
+| `light_sensor/` | `az-delivery-devkit-v4` | TSL2561 power at 3.3 V, common GND, SDA on GPIO21, SCL on GPIO22. |
+| `switch/` | `az-delivery-devkit-v4` | GPIO4 to the compatible relay input and common GND. Power the relay at its rated voltage. |
 
-Before uploading the gateway, copy `ch9/gateway/include/wifi_config.example.h` to `wifi_config.h` in the same folder. Put your Wi-Fi name and password in the copy. Git ignores `wifi_config.h`. If the copy is missing, the gateway still builds with placeholder values but cannot connect to your Wi-Fi.
+The shared LED and mesh code and the sensor drivers are in `shared/`.
 
-## Progress
+1. Before building the gateway, copy `gateway/include/wifi_config.example.h` to `gateway/include/wifi_config.h` and enter your Wi-Fi settings locally. Git ignores the local file.
+2. Open a terminal in the selected project folder and run the matching command.
 
-All three programs built successfully from this repository on October 8, 2026 using Espressif 32 7.0.1 and ESP-IDF 6.0.1. They have not been uploaded or tested on hardware yet. The gateway builds with placeholder Wi-Fi values until a local configuration is added.
+   ```bash
+   # From gateway/
+   pio run -e esp32-s3-devkitc-1 -t upload -t monitor
 
-## Next steps
+   # From light_sensor/ or switch/
+   pio run -e az-delivery-devkit-v4 -t upload -t monitor
+   ```
 
-1. Gather the three ESP32 boards, sensor, relay, LEDs, and wiring supplies.
-2. Add the gateway Wi-Fi details locally.
-3. Upload the matching program to each board.
-4. Wire and power the boards, then configure the nodes with nRF Mesh.
-5. Test web ON/OFF commands and the sensor in light and darkness.
+3. Check for `Lux:` in the sensor monitor and `sta ip:` in the gateway monitor.
 
-## Group commits
+## Test the lab
 
-Pull the latest changes before editing. After a completed change, use Source Control in VS Code to review and stage the files, write a short commit message, then push. Each member should use their own GitHub account. Saving a file does not create a commit.
+1. Power all three boards. Provision them in nRF Mesh on one network and bind the same app key to the models below.
 
-## Source
+   | Node | App key binding |
+   | --- | --- |
+   | Gateway | Generic OnOff Client |
+   | Switch | Generic OnOff Client and Server |
+   | Light sensor | Generic OnOff Server, publication set to All Nodes |
 
-The starter code comes from Chapter 9 of Packt's *Internet of Things with ESP32*: https://github.com/PacktPublishing/Internet-of-Things-with-ESP32/tree/main/ch9
+2. From a device on the gateway Wi-Fi network, open `http://` followed by the gateway IP from `sta ip:`. Try ON and OFF with the relay's load terminals empty for the first click test.
+3. Cover the TSL2561, then uncover it or shine a light on it. Check that changes across 30 lux reach the switch.
 
-The original license and the sensor library licenses are included. The compatibility fixes update the old FreeRTOS tick name, enable the BLE mesh server models, and update the Wi-Fi interface name.
+Starter firmware adapted from [Chapter 9 of Packt's Internet of Things with ESP32](https://github.com/PacktPublishing/Internet-of-Things-with-ESP32/tree/main/ch9). The source and bundled drivers retain their licenses.
